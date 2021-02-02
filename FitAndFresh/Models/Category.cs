@@ -11,7 +11,7 @@ namespace FitAndFresh.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Display(Name="Category Name")] //this affects how the name property appears when we display this property in the UI
         public string Name { get; set; }
     }
 }
