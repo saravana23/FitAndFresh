@@ -1,0 +1,60 @@
+﻿@model FitAndFresh.Models.ViewModels.SubCategoryAndCategoryViewModel
+@using FitAndFresh.ExtensionMethods
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h2 class="text-info">Create A New Sub Category</h2>
+<br />
+
+<partial name="_StatusMessage" model="Model.Message" />
+@* Model.Message -- Message relates to the 'Message' column of the SubCatAndCatViewModel*@
+<div class="border backgroundWhite row">
+
+    <div class="col-8 border right">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group row">
+                <div class="col-3">
+                    <label asp-for="SubCategory.CategoryId" class="col-form-label"></label>
+                </div>
+                <div class="col-5">
+                    <select id="dListCategory" asp-for="SubCategory.CategoryId" asp-items="Model.ListOfCategories.ItemListSelection(Model.SubCategory.CategoryId)" class="form-control"></select>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <div class="col-3">
+                    <label asp-for="SubCategory.Name" class="col-form-label"></label>
+                </div>
+                <div class="col-5">
+                    <input asp-for="SubCategory.Name" class="form-control"/>
+                </div>
+                <span asp-validation-for="SubCategory.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-5 offset-3">
+                    *@* use offset here so that it appears next to form input tag, not below the label*@
+                    <partial name="_CreateAndBackToListButton" />
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="col-3 offset-1">
+        @if (Model.ListOfSubCategories.Count() > 0)
+        {
+            <p>Current Sub Categories</p>
+
+            <div id="ListOfSubCategories">
+                <ul class="list-group"></ul>
+            </div>
+        }
+    </div>
+
+
+
+</div>
