@@ -72,8 +72,8 @@ body {
 
 .search-background {
     background: url('/images/002.jpg');
-    background-size: contain;
-    background-color: blueviolet;
+    background-size: cover;
+    background-color: floralwhite;
 }
 
 .backgroundWhite {

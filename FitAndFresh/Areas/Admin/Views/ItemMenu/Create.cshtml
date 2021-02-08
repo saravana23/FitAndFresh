@@ -1,0 +1,86 @@
+﻿@model FitAndFresh.Models.ViewModels.ItemMenuVM
+@using FitAndFresh.ExtensionMethods
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h2 class="text-info">Add an item to the menu!</h2>
+<br />
+
+<form method="post" enctype="multipart/form-data">
+    <div class="border backgroundWhite">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ItemInMenu.Name" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="ItemInMenu.Name" class="form-control" />
+            </div>
+            <span asp-validation-for="ItemInMenu.Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ItemInMenu.ItemDescription" class="col-form-label"></label>
+            </div>
+            <div class="col-9">
+                @Html.TextAreaFor(s => s.ItemInMenu.ItemDescription)
+            </div>
+            <span asp-validation-for="ItemInMenu.ItemDescription" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ItemInMenu.ItemPrice" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="ItemInMenu.ItemPrice" class="form-control" />
+            </div>
+            <span asp-validation-for="ItemInMenu.ItemPrice" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ItemInMenu.ItemPicture" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input type="file" name="file" multiple class="form-control" />
+            </div>
+
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ItemInMenu.CatId" class="col-form-label"></label>
+            </div>
+            
+            <div class="col-5">
+                <select asp-for="@Model.ItemInMenu.CatId" id="catId" asp-items="Model.Cat.ItemListSelection(Model.ItemInMenu.CatId)" class="form-control"></select>
+            </div>
+           
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ItemInMenu.ProteinContent" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="ItemInMenu.ProteinContent" class="form-control" />
+            </div>
+            <span asp-validation-for="ItemInMenu.ProteinContent" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-5 offset-2">
+                *@* use offset here so that it appears next to form input tag, not below the label*@
+                <partial name="_CreateAndBackToListButton" />
+            </div>
+        </div>
+    </div>
+</form>

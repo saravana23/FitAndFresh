@@ -12,7 +12,7 @@ namespace FitAndFresh.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ItemName = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     ItemDescription = table.Column<string>(nullable: true),
                     ProteinContent = table.Column<string>(nullable: true),
                     ItemPrice = table.Column<double>(nullable: false),
