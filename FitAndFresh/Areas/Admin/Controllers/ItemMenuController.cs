@@ -106,5 +106,85 @@ namespace FitAndFresh.Areas.Admin.Controllers
         }
 
 
-    }
+        //GET - Details
+        public async Task<IActionResult> Details(int? id)
+        {
+            var item = await _db.ItemInMenu.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(item);
+        }
+
+
+        //GET - Delete
+        public async Task<IActionResult> Delete(int? id)
+        {
+            
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            IMenuVM.ItemInMenu =  _db.ItemInMenu.Include(s => s.Cat).SingleOrDefault(s => s.Id == id);
+
+
+            if(IMenuVM.ItemInMenu == null)
+            {
+                return NotFound();
+            }
+
+            return View(IMenuVM);
+
+            //var itemToDelete = _db.ItemInMenu.FindAsync(id);
+            //var itemToDelete = _db.ItemInMenu.SingleOrDefault(s=>s.Id == id);
+           // ItemMenuVM.ItemInMenu = await;
+
+            //if (itemToDelete == null)
+           // if(ItemMenuVM.ItemInMenu = null)
+           // {
+          //      return NotFound();
+            //}
+                        
+           // return View(ItemMenuVM);
+
+
+
+        }
+
+
+
+        //POST - Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteItem(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //var itemToDelete = await _db.ItemInMenu.FindAsync(id);
+
+            var itemToDelete = _db.ItemInMenu.Include(s => s.Cat).SingleOrDefault(s => s.Id == id);
+
+
+            if(itemToDelete == null)
+            {
+                return NotFound();
+            }
+
+            _db.Remove(itemToDelete);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        
+
+
+
+}
 }
