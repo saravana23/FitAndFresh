@@ -35,6 +35,39 @@ namespace FitAndFresh.Data.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("FitAndFresh.Models.ItemInMenu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CatId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ItemDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ItemPicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ItemPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ProteinContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatId");
+
+                    b.ToTable("ItemInMenu");
+                });
+
             modelBuilder.Entity("FitAndFresh.Models.SubCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -254,6 +287,15 @@ namespace FitAndFresh.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("FitAndFresh.Models.ItemInMenu", b =>
+                {
+                    b.HasOne("FitAndFresh.Models.Category", "Cat")
+                        .WithMany()
+                        .HasForeignKey("CatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FitAndFresh.Models.SubCategory", b =>

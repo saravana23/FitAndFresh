@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20210203173748_addSubCategoryToDatabase2.cs" />
     <Compile Remove="Data\Migrations\20210203173748_addSubCategoryToDatabase2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210205123848_AddItemMenuToDb.cs" />
+    <Compile Remove="Data\Migrations\20210205123848_AddItemMenuToDb.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
