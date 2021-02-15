@@ -1,6 +1,11 @@
-﻿@{
+﻿@model FitAndFresh.Models.ViewModels.HomePageMenuViewModel
+
+@*
+@{
     ViewData["Title"] = "Home Page";
 }
+    *@
+
 
 <style>
     img {
@@ -25,3 +30,68 @@
 
     <img src="~/Images/004.jpg" class="col-4"/>
 </div>
+
+<br />
+
+<div class="backgroundWhite container">
+    
+    <ul id="menuItemNav" class="menu-list list-inline text-center">
+        <li class="filter active btn btn-secondary ml-1 mr-1" data-filter=".restaurantMenuClass">See all</li>
+        @*
+            - the data property gets ignored by ASP
+            - then I set the name of this to filter
+            - this name filter, will be read by JQuery
+            - then I will enter the name of the class that I set in the HompageMenuPicturePartial
+            - this then means that when we click the 'See All' list item above, we can find out that if the filter is 'restaurantMenuClass', 
+              then we will display the menu restaurant. 
+        *@
+       
+        @foreach (var c in Model.ItemCategory)
+        {
+            <li class="filter ml-1 mr-1"data-filter=".@c.Name.Replace(" ",string.Empty)">@c.Name</li>
+            // - so what this means is that, if a food category in our custom nav is selected,
+            //   that categories div will be displayed
+            // - so...if the user clicks on one of these list items, instead of the 'See All' list item, then it will return that specific category that the user has clicked
+            // - the way this works, is that using filter, the filter to see all items is 'restaurantMenuClass', but for each specific category, it will
+            //   be data-filter will be assigned to the name of the specific category name that the user clicked on  
+        }
+    </ul>
+    
+    
+    @foreach (var i in Model.ItemCategory)
+    {
+    <div class="row">
+        <partial name="_HomePageMenuPicturePartial" model="@Model.ItemInMenu.Where(s=>s.Cat.Name.Equals(i.Name))" />  @* where a name (i) in ItemCategory is equal to a Name in Cat (which is the foreign key of the ItemInMenu table (model) *@
+        @*so we set  @model to be the item in menu, for that particular category*@
+             
+    </div>
+
+
+        
+        
+
+    }
+
+    
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script>
+    var getPost = $('.post');
+
+    (function ($) {
+        $('#menuItemNav li').click(function () {
+            $("#menuItemNav li").removeClass('active btn btn-secondary');
+            $(this).addClass('active btn btn-secondary');
+
+            var chosenFilter = $(this).data("filter");
+
+            $(".restaurantMenuClass").fadeOut();
+
+            setTimeout(function () {
+                $(chosenFilter).slideDown();
+            }, 200);
+        });
+    })(jQuery);
+</script>
