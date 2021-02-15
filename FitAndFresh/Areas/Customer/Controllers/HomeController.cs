@@ -6,22 +6,41 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FitAndFresh.Models;
+using FitAndFresh.Models.ViewModels;
+using FitAndFresh.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitAndFresh.Controllers
 {
     [Area("Customer")] /// By writing this, it lets my application know that the 'Home Controller' is inside the 'Customer' Area
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ApplicationDbContext _db;
+
+        public HomeController (ApplicationDbContext db)
         {
-            _logger = logger;
+            _db = db;
         }
 
-        public IActionResult Index()
+       
+        //private readonly ILogger<HomeController> _logger;
+
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
+
+ 
+
+        public async Task<IActionResult> Index()
         {
-            return View();
+            HomePageMenuViewModel HomeVM = new HomePageMenuViewModel()
+            {
+                ItemInMenu = await _db.ItemInMenu.Include(s => s.Cat).ToListAsync(),
+                ItemCategory = await _db.Category.ToListAsync(),
+            };
+            return View(HomeVM);
         }
 
         /// These methods are called "Actions in a controller" - correct terminology
