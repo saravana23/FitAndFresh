@@ -31,7 +31,11 @@
                     <th>
                         @Html.DisplayNameFor(m => m.CatId)
                     </th>
-                  
+                    <td>
+                        @*@Html.DisplayNameFor(m => m.ItemPicture)*@
+                    </td>
+
+
                     <th></th>
                     <th></th>
                 </tr>
@@ -49,6 +53,12 @@
                 <td>
                     @Html.DisplayFor(m => item.Cat.Name)
                 </td>
+                <td>
+                    <img src="@item.ItemPicture" class="img-thumbnail" />
+                   
+                </td>
+
+
 
                 <td>
                     <partial name="_TableButtonPartial" model="item.Id" />
