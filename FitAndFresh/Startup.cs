@@ -32,10 +32,11 @@ namespace FitAndFresh
                     Configuration.GetConnectionString("DefaultConnection")));
             ///services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             /// by removing the options Sign in Required Confirmed Account, we j
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
-            services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddRazorPages().AddRazorRuntimeCompilation();           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

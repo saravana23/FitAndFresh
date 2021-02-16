@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using FitAndFresh.Data;
 using FitAndFresh.Models.ViewModels;
+using FitAndFresh.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitAndFresh.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = StaticDetails.ManagementAccount)]
     public class SubCategoryController : Controller
     {
 

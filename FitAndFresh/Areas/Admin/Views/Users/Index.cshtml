@@ -1,0 +1,91 @@
+﻿@model IEnumerable<AddUser>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h2 class="text-info">List of Users</h2>
+<br />
+
+<br />
+<br />
+
+<div class="border backgroundWhite">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-info">List of Users</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn-success">Register for account</a>
+        </div>
+    </div>
+    <br />
+    <div>
+        @if (Model.Count() > 0)
+        {
+            <table class="table table-striped border">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.CustomerName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.AddressFirstLine)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.AddressSecondLine)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.PostCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.PhoneNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Email)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(m => item.CustomerName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => item.AddressFirstLine)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => item.AddressSecondLine)
+                </th>
+                
+                <th>
+                    @Html.DisplayNameFor(m => item.PostCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => item.PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => item.Email)
+                </th>
+
+                @*<td>
+            <partial name="_TableButtonPartial" model="item.Id" />
+        </td>*@
+            </tr>
+                }
+
+
+
+            </table>
+        }
+        else
+        {
+            <p>There are currently no categories</p>
+        }
+    </div>
+</div>
+
+

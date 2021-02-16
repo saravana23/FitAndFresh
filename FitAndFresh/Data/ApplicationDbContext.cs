@@ -18,5 +18,7 @@ namespace FitAndFresh.Data
         public DbSet<SubCategory> SubCategory { get; set; }
 
         public DbSet<ItemInMenu> ItemInMenu { get; set; }
+
+        public DbSet<AddUser> AddUser { get; set; }
     }
 }
