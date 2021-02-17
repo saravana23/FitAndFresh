@@ -1,4 +1,9 @@
 ﻿@using FitAndFresh.Utility
+@using Microsoft.AspNetCore.Http
+
+@inject IHttpContextAccessor HttpConAccessor
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,33 +45,50 @@
                                     <a class="dropdown-item" asp-action="Index" asp-controller="Users" asp-area="Admin">Users</a>
                                 }
 
-                                    <a class="dropdown-item" asp-action="Index" asp-controller="ItemMenu" asp-area="Admin">Item Menu</a>
+                                <a class="dropdown-item" asp-action="Index" asp-controller="ItemMenu" asp-area="Admin">Item Menu</a>
 
 
-                                </div>
+                            </div>
                         </li>
+
+                        @if (HttpConAccessor.HttpContext.Session.GetInt32("SessionsBasketCounter") != null)
+                        {
+
+                            
+                            <li style="color:aqua">
+                                <a class="nav-link">
+                                    @{
+                                        var counter = HttpConAccessor.HttpContext.Session.GetInt32("SessionsBasketCounter");
+                                    }
+                                    <i class="fas fa-shopping-basket form"></i> (@counter)
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
                         <li style="color:aqua">
                             <a class="nav-link">
                                 <i class="fas fa-shopping-basket form"></i> (0)
                             </a>
                         </li>
-                        
+                        }
+
 
                         @*@if (User.IsInRole(StaticDetails.ManagementAccount))
-                        {
-                            <li class="nav-item dropdown text-white-50">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropDownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Menu
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropDownMenuLink">
-                                    <a class="dropdown-item" asp-action="Index" asp-controller="Category" asp-area="Admin">Category</a>
-                                    <a class="dropdown-item" asp-action="Index" asp-controller="SubCategory" asp-area="Admin">Sub Category</a>
-                                    <a class="dropdown-item" asp-action="Index" asp-controller="ItemMenu" asp-area="Admin">Item Menu</a>
-                                    <a class="dropdown-item">Coupons</a>
-                                    <a class="dropdown-item" asp-action="Index" asp-controller="Users" asp-area="Admin">Users</a>
-                                </div>
-                            </li>
-                        }*@
+        {
+            <li class="nav-item dropdown text-white-50">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropDownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Menu
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropDownMenuLink">
+                    <a class="dropdown-item" asp-action="Index" asp-controller="Category" asp-area="Admin">Category</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="SubCategory" asp-area="Admin">Sub Category</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="ItemMenu" asp-area="Admin">Item Menu</a>
+                    <a class="dropdown-item">Coupons</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="Users" asp-area="Admin">Users</a>
+                </div>
+            </li>
+        }*@
 
 
                         @*

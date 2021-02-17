@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using FitAndFresh.Data;
+using Microsoft.EntityFrameworkCore;
+using FitAndFresh.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace FitAndFresh.Areas.Identity.Pages.Account
 {
@@ -20,14 +24,18 @@ namespace FitAndFresh.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ApplicationDbContext _db;
+
 
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _db = db;
         }
 
         [BindProperty]
@@ -82,6 +90,15 @@ namespace FitAndFresh.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var existingUserSession = await _db.Users.Where(s => s.Email == Input.Email).FirstOrDefaultAsync();
+                    //first or default, so that it only obtains one
+
+                    IEnumerable<Basket> basketIEnum = await _db.Basket.Where(s => s.BasketUserId == existingUserSession.Id).ToListAsync();
+
+                    //List<Basket> basketIEnum = await _db.Basket.Where(s => s.BasketUserId == existingUserSession.Id).ToListAsync();
+
+                    HttpContext.Session.SetInt32("SessionsBasketCounter", basketIEnum.Count());
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
