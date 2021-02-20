@@ -33,6 +33,10 @@ namespace FitAndFresh.Models
         [NotMapped]
         public DateTime CollectionDate { get; set; }
 
+        public string StatusOfPayment { get; set; }
+
+        public string Status { get; set; }
+
         [Required]        
         [Display(Name = "Collection Name")]
         public string CollectionName { get; set; }

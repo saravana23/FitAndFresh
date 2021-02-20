@@ -22,5 +22,9 @@ namespace FitAndFresh.Data
         public DbSet<AddUser> AddUser { get; set; }
 
         public DbSet<Basket> Basket { get; set; }
+
+        public DbSet<OrderProcessingInfo> OrderProcessingInfo { get; set; }
+
+        public DbSet<OrderInfo> OrderInfo { get; set; }
     }
 }
