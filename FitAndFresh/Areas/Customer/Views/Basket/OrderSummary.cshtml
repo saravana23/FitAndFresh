@@ -1,0 +1,233 @@
+﻿
+@{
+    ViewData["Title"] = "OrderSummary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Collection Details</h1>
+
+@model FitAndFresh.Models.ViewModels.BasketDetailsVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<form method="post">
+    <div class="float-right">
+        <button class="btn-info text-light>
+            <a asp-area="Customer" asp-controller="Basket" asp-action="Index">Go back to basket</a>
+        </button>
+    </div>
+    <br />
+    <br />
+    <br />
+
+
+    @if (Model.BasketList.Count > 0)
+    {
+        <input id="idUser" asp-for="@Model.BasketList[0].BasketUserId" hidden />
+        //this property is hidden as I need to retrieve the Id of the user, but I do not want the user to see this information displayed in the current view
+
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100">Step 2 of 3</div>
+        </div>
+
+        <div>
+            <div class="form-group row">
+                <div class="col-2">
+                    <label asp-for="@Model.OrderProcessingInfo.CollectionName" id="collectName" class="col-form-label"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="@Model.OrderProcessingInfo.CollectionName" class="form-control" />
+                </div>
+                <span asp-validation-for="@Model.OrderProcessingInfo.CollectionName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-2">
+                    <label asp-for="@Model.OrderProcessingInfo.PhoneNumber" id="collectPhoneNumber" class="col-form-label"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="@Model.OrderProcessingInfo.PhoneNumber" class="form-control" />
+                </div>
+                <span asp-validation-for="@Model.OrderProcessingInfo.PhoneNumber" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-2">
+                    <label>Collection Time</label>
+                </div>
+                <div class="col-9">
+                    <input type="time" asp-for="@Model.OrderProcessingInfo.CollectionTime" id="timepicker" value="" class="form-control" />
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-2">
+                    <label>Collection Date</label>
+                </div>
+                <div class="col-9">
+                    <input type="date" asp-for="@Model.OrderProcessingInfo.CollectionDate" id="datepicker" value="" class="form-control" />
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+        <br />
+        <br />
+        <br />
+
+
+        <h4>Summary</h4>
+
+        <div>
+            @foreach (var i in Model.BasketList)
+            {
+
+                <h7>@i.ItemInMenu.Name</h7>
+                <ul>
+                    <li>@i.ItemInMenu.ItemDescription</li>
+                    <li>£@i.ItemInMenu.ItemPrice x @i.Quantity</li>
+
+                </ul>
+
+                <hr>
+
+            }
+        </div>
+
+        <div class="float-right">
+
+            <h2>
+                Total: £<span id="textBasketTotal">@Model.OrderProcessingInfo.OrderTotal</span>
+            </h2>
+        </div>
+        <br />
+        <br />
+        <div>
+            <button type="submit" id="submitOrder" onclick="return validateCollectionDetails()" value="Submit Order" class="btn-success float-right">
+                <h4>Submit Order</h4>
+            </button>
+        </div>
+
+
+    }
+
+    else
+    {
+        <div>
+            <h2>Your basket is empty!</h2>
+            <br />
+            <p><i>Have a look at our menu and add some of our delicious food to your basket!</i></p>
+        </div>
+    }
+</form>
+
+@section Scripts {
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
+    <script>
+        //$(function () {                       
+        //    $("#datepicker").datepicker({ minDate: 0, maxDate: "+2W" })
+        //    $("#selectTime").timepicker({ 'minTime': '12:00 PM', 'maxTime': '10:30PM', step: '30' })
+        //});
+
+
+
+
+        $(function () {
+            var minimumDate = 0;
+            if (currentTimeDate >= "20.30") {
+                minimumDate = 1;
+            }
+
+            $("#datepicker").datepicker({ minDate: minimumDate, maxDate: "+2W" })
+            $("#timepicker").timepicker({ 'minTime': '12:00 PM', 'maxTime': '10:00PM', step: '30' })
+        });
+
+
+
+        function createCollectionTime() {
+            var selectedDate = document.getElementById("datepicker").value;
+            var selectedDateConverted = new Date(selectedDate);
+            var todaysDate = new Date();
+
+            selectedDateConverted(0, 0, 0, 0);
+            if (selectedDateConverted > todaysDate) {
+                selectedTime = '12:00pm';
+
+            }
+            else {
+                selectedDate = currentTimeDate();
+            }
+
+            $('#timepicker').timepicker('option', 'minTime', selectedTime);
+        }
+
+        function currentTimeDate() {
+            var currentDate = new Date();
+
+            var minTime = "";
+            if (currentDate.getHours() < 12) {
+                minTime = '12:30PM';
+            }
+            else {
+                if (currentDate.getMinutes() < 30) {
+                    minTime = (currentDate.getHours() + 1).toString() + ':30pm'
+                }
+                else {
+                    minTime = (currentDate.getHours() + 2).toString() + ':00pm'
+                }
+            }
+            return minTime;
+        }
+
+        $("#datepicker").change(function () {
+            createCollectionTime();
+        });
+
+
+        function validateCollectionDetails() {
+            var selectedTime = document.getElementById("timepicker").value;
+            var selectedDate = document.getElementById("datepicker").value;
+            var selectedName = document.getElementById("collectName").value;
+            var selectedPhone = document.getElementById("collectPhoneNumber").value;
+
+            if (selectedTime.toString() == ' ') {
+                alert("Please enter a valid collection time");
+                return false;
+            }
+            else if (selectedDate.toString() == ' ') {
+                alert("Please enter a valid collection date");
+                return false;
+            }
+
+            else if (selectedName.toString() == ' ') {
+                alert("Please enter a valid name");
+                return false;
+            }
+
+            else if (selectedPhone.toString() == ' ') {
+                alert("Please enter a valid phone number");
+                return false;
+            }
+
+            else {
+                return true;
+            }
+        }              
+          
+      
+
+
+    </script>
+}
+

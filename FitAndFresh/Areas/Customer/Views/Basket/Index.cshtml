@@ -1,0 +1,114 @@
+﻿@model FitAndFresh.Models.ViewModels.BasketDetailsVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<form method="post">
+    <div class="float-right">
+        <button class="btn-info text-light>
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index">Go back to the menu</a>
+        </button>
+    </div>
+
+    @if (Model.BasketList.Count > 0)
+    {
+        <input id="idUser" asp-for="@Model.BasketList[0].BasketUserId" hidden />
+        //this property is hidden as I need to retrieve the Id of the user, but I do not want the user to see this information displayed in the current view
+
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">Step 1 of 3</div>
+        </div>
+
+        <div>
+            @foreach (var i in Model.BasketList)
+            {
+
+                <h4>@i.ItemInMenu.Name</h4>
+                <ul>
+                    <li>@i.ItemInMenu.ItemDescription</li>
+                    <li>£@i.ItemInMenu.ItemPrice x @i.Quantity</li>
+
+                </ul>
+
+
+                <div class="row">
+                    <div class="d-none d-lg-block col-lg-2 text-center">
+                        <img src="@i.ItemInMenu.ItemPicture" width="120" height="80" />
+                    </div>
+                </div>
+
+
+
+                <div class="col-6">
+                    <div class="row col-2">
+                        <button type="submit" class="btn-success" asp-action="increase" asp-route-basketId="@i.Id">+</button>
+                    </div>
+
+                    <div class="row col-4">
+                        <button type="submit" class="btn-danger" asp-action="decrease" asp-route-basketId="@i.Id">-</button>
+                    </div>
+                </div>
+
+                <div class="col-8">
+                    <button type="submit" class="btn-outline-danger" asp-action="delete" asp-route-basketId="@i.Id">-</button>
+                </div>
+
+                <hr>
+
+
+
+            }
+        </div>
+
+        <div class="float-right">
+
+            <h2>
+                Total: <span id="textBasketTotal">@Model.OrderProcessingInfo.OrderTotal</span>
+            </h2>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div class="float-right">
+
+            <a class=" btn btn-success" asp-action="OrderSummary" asp-area="Customer" asp-controller="Basket">
+                <h4>
+                    Order Summary
+                </h4>
+            </a>
+        </div>
+
+
+
+        <div class="card-body">
+            @foreach (var i in Model.BasketList)
+            {
+
+                <div class="row">
+                    <div class="d-none d-lg-block col-lg-2 text-center">
+                        <img src="@i.ItemInMenu.ItemPicture" width="120" height="80" />
+
+
+                        @*<img src="@Model.BasketList.Where(s => s.ItemInMenu.Id == i.ProductId)" width="120" height="80" />*@
+                    </div>
+                </div>
+            }
+        </div>
+
+
+    }
+
+    else
+    {
+        <div>
+            <h2>Your basket is empty!</h2>
+            <br />
+            <p><i>Have a look at our menu and add some of our delicious food to your basket!</i></p>
+        </div>
+    }
+</form>
+
