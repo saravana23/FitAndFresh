@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FitAndFresh.Data.Migrations
 {
-    public partial class AddOrderInfoAndOrderProcessingInfoToDatabase : Migration
+    public partial class AddOrderNameStringToOrderInfo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

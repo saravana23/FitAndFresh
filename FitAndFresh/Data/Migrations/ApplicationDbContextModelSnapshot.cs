@@ -103,8 +103,8 @@ namespace FitAndFresh.Data.Migrations
                     b.Property<int>("ItemInMenuId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ItemName")
-                        .HasColumnType("int");
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("ItemPrice")
                         .HasColumnType("float");
@@ -149,6 +149,12 @@ namespace FitAndFresh.Data.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusOfPayment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
