@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FitAndFresh.Data.Migrations
 {
-    public partial class AddOrderNameStringToOrderInfo : Migration
+    public partial class AddOrderInformationAndOrderProcessingInformationToDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "OrderProcessingInfo",
+                name: "OrderProcessingInformation",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -17,15 +17,17 @@ namespace FitAndFresh.Data.Migrations
                     DateOfOrder = table.Column<DateTime>(nullable: false),
                     OrderTotal = table.Column<double>(nullable: false),
                     CollectionTime = table.Column<DateTime>(nullable: false),
+                    StatusOfPayment = table.Column<string>(nullable: false),
+                    Status = table.Column<string>(nullable: false),
                     CollectionName = table.Column<string>(nullable: false),
                     PhoneNumber = table.Column<string>(nullable: false),
                     OrderNumber = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderProcessingInfo", x => x.Id);
+                    table.PrimaryKey("PK_OrderProcessingInformation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderProcessingInfo_AspNetUsers_UserId",
+                        name: "FK_OrderProcessingInformation_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -33,7 +35,7 @@ namespace FitAndFresh.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderInfo",
+                name: "OrderInformation",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -46,44 +48,44 @@ namespace FitAndFresh.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderInfo", x => x.Id);
+                    table.PrimaryKey("PK_OrderInformation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderInfo_ItemInMenu_ItemInMenuId",
+                        name: "FK_OrderInformation_ItemInMenu_ItemInMenuId",
                         column: x => x.ItemInMenuId,
                         principalTable: "ItemInMenu",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderInfo_OrderProcessingInfo_OrderProcessingId",
+                        name: "FK_OrderInformation_OrderProcessingInformation_OrderProcessingId",
                         column: x => x.OrderProcessingId,
-                        principalTable: "OrderProcessingInfo",
+                        principalTable: "OrderProcessingInformation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderInfo_ItemInMenuId",
-                table: "OrderInfo",
+                name: "IX_OrderInformation_ItemInMenuId",
+                table: "OrderInformation",
                 column: "ItemInMenuId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderInfo_OrderProcessingId",
-                table: "OrderInfo",
+                name: "IX_OrderInformation_OrderProcessingId",
+                table: "OrderInformation",
                 column: "OrderProcessingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderProcessingInfo_UserId",
-                table: "OrderProcessingInfo",
+                name: "IX_OrderProcessingInformation_UserId",
+                table: "OrderProcessingInformation",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderInfo");
+                name: "OrderInformation");
 
             migrationBuilder.DropTable(
-                name: "OrderProcessingInfo");
+                name: "OrderProcessingInformation");
         }
     }
 }

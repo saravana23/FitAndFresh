@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitAndFresh.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210218131600_AddOrderInfoAndOrderProcessingInfoToDatabase")]
-    partial class AddOrderNameStringToOrderInfo
+    [Migration("20210218131600_AddOrderInformationAndOrderProcessingInformationToDatabase")]
+    partial class AddOrderInformationAndOrderProcessingInformationToDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,7 +95,7 @@ namespace FitAndFresh.Data.Migrations
                 b.ToTable("ItemInMenu");
             });
 
-            modelBuilder.Entity("FitAndFresh.Models.OrderInfo", b =>
+            modelBuilder.Entity("FitAndFresh.Models.OrderInformation", b =>
             {
                 b.Property<int>("Id")
                     .ValueGeneratedOnAdd()
@@ -106,7 +106,7 @@ namespace FitAndFresh.Data.Migrations
                     .HasColumnType("int");
 
                 b.Property<int>("ItemName")
-                    .HasColumnType("string");
+                    .HasColumnType("int");
 
                 b.Property<double>("ItemPrice")
                     .HasColumnType("float");
@@ -123,10 +123,10 @@ namespace FitAndFresh.Data.Migrations
 
                 b.HasIndex("OrderProcessingId");
 
-                b.ToTable("OrderInfo");
+                b.ToTable("OrderInformation");
             });
 
-            modelBuilder.Entity("FitAndFresh.Models.OrderProcessingInfo", b =>
+            modelBuilder.Entity("FitAndFresh.Models.OrderProcessingInformation", b =>
             {
                 b.Property<int>("Id")
                     .ValueGeneratedOnAdd()
@@ -161,7 +161,7 @@ namespace FitAndFresh.Data.Migrations
 
                 b.HasIndex("UserId");
 
-                b.ToTable("OrderProcessingInfo");
+                b.ToTable("OrderProcessingInformation");
             });
 
             modelBuilder.Entity("FitAndFresh.Models.SubCategory", b =>
@@ -428,7 +428,7 @@ namespace FitAndFresh.Data.Migrations
                     .IsRequired();
             });
 
-            modelBuilder.Entity("FitAndFresh.Models.OrderInfo", b =>
+            modelBuilder.Entity("FitAndFresh.Models.OrderInformation", b =>
             {
                 b.HasOne("FitAndFresh.Models.ItemInMenu", "ItemInMenu")
                     .WithMany()
@@ -436,14 +436,14 @@ namespace FitAndFresh.Data.Migrations
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
 
-                b.HasOne("FitAndFresh.Models.OrderProcessingInfo", "OrderProcessingInfo")
+                b.HasOne("FitAndFresh.Models.OrderProcessingInformation", "OrderProcessingInformation")
                     .WithMany()
                     .HasForeignKey("OrderProcessingId")
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
             });
 
-            modelBuilder.Entity("FitAndFresh.Models.OrderProcessingInfo", b =>
+            modelBuilder.Entity("FitAndFresh.Models.OrderProcessingInformation", b =>
             {
                 b.HasOne("FitAndFresh.Models.AddUser", "AddUser")
                     .WithMany()

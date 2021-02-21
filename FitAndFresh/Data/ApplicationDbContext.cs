@@ -26,5 +26,12 @@ namespace FitAndFresh.Data
         public DbSet<OrderProcessingInfo> OrderProcessingInfo { get; set; }
 
         public DbSet<OrderInfo> OrderInfo { get; set; }
+
+
+        public DbSet<OrderProcessingInformation> OrderProcessingInformation { get; set; }
+
+        public DbSet<OrderInformation> OrderInformation { get; set; }
+
+    
     }
 }

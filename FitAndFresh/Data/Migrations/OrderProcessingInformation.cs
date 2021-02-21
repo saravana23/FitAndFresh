@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FitAndFresh.Models
 {
-    public class OrderProcessingInformation
+    public class OrderProcessingInfo
     {
         [Key]
         public int Id { get; set; }

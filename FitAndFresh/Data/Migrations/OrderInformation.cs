@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FitAndFresh.Models
 {
-    public class OrderInformation
+    public class OrderInfo
     {
         [Key]
         public int Id { get; set; }
@@ -16,7 +16,7 @@ namespace FitAndFresh.Models
         public int OrderProcessingId { get; set; }
 
         [ForeignKey("OrderProcessingId")]
-        public virtual OrderProcessingInformation OrderProcessingInformation { get; set; }
+        public virtual OrderProcessingInfo OrderProcessingInfo { get; set; }
 
 
         [Required]

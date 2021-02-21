@@ -30,11 +30,11 @@ namespace FitAndFresh.Areas.Customer.Controllers
         {
             basketDetails = new BasketDetailsVM()
             {
-                OrderProcessingInfo = new Models.OrderProcessingInfo()
+                OrderProcessingInformation = new Models.OrderProcessingInformation()
 
             };
 
-            basketDetails.OrderProcessingInfo.OrderTotal = 0;
+            basketDetails.OrderProcessingInformation.OrderTotal = 0;
             //Order total is initially set to 0
 
             var claimIdentity = (ClaimsIdentity)User.Identity;
@@ -55,7 +55,7 @@ namespace FitAndFresh.Areas.Customer.Controllers
             foreach (var i in basketDetails.BasketList)
             {
                 i.ItemInMenu = await _db.ItemInMenu.FirstOrDefaultAsync(s => s.Id == i.ProductId);
-                basketDetails.OrderProcessingInfo.OrderTotal = basketDetails.OrderProcessingInfo.OrderTotal + (i.ItemInMenu.ItemPrice * i.Quantity);
+                basketDetails.OrderProcessingInformation.OrderTotal = basketDetails.OrderProcessingInformation.OrderTotal + (i.ItemInMenu.ItemPrice * i.Quantity);
                 //this iterates through the items in BasketList and gets the total of the order
             }
 
@@ -121,11 +121,11 @@ namespace FitAndFresh.Areas.Customer.Controllers
         {
             basketDetails = new BasketDetailsVM()
             {
-                OrderProcessingInfo = new Models.OrderProcessingInfo()
+                OrderProcessingInformation = new Models.OrderProcessingInformation()
 
             };
 
-            basketDetails.OrderProcessingInfo.OrderTotal = 0;
+            basketDetails.OrderProcessingInformation.OrderTotal = 0;
             //Order total is initially set to 0
 
             var claimIdentity = (ClaimsIdentity)User.Identity;
@@ -143,15 +143,15 @@ namespace FitAndFresh.Areas.Customer.Controllers
                 //if basket is not null, then we populate BasketList (of the BasketDetailsVM) with the items within basket
             }
 
-            basketDetails.OrderProcessingInfo.CollectionName = addUser.CustomerName;
-            basketDetails.OrderProcessingInfo.PhoneNumber = addUser.PhoneNumber;
-            basketDetails.OrderProcessingInfo.CollectionTime = DateTime.Now;
+            basketDetails.OrderProcessingInformation.CollectionName = addUser.CustomerName;
+            basketDetails.OrderProcessingInformation.PhoneNumber = addUser.PhoneNumber;
+            basketDetails.OrderProcessingInformation.CollectionTime = DateTime.Now;
 
 
             foreach (var i in basketDetails.BasketList)
             {
                 i.ItemInMenu = await _db.ItemInMenu.FirstOrDefaultAsync(s => s.Id == i.ProductId);
-                basketDetails.OrderProcessingInfo.OrderTotal = basketDetails.OrderProcessingInfo.OrderTotal + (i.ItemInMenu.ItemPrice * i.Quantity);
+                basketDetails.OrderProcessingInformation.OrderTotal = basketDetails.OrderProcessingInformation.OrderTotal + (i.ItemInMenu.ItemPrice * i.Quantity);
                 //this iterates through the items in BasketList and gets the total of the order
             }
 
@@ -162,7 +162,7 @@ namespace FitAndFresh.Areas.Customer.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Summary")]
-        public async Task<IActionResult> OrderPost(string tokenStripe)
+        public async Task<IActionResult> SummaryPost(string tokenStripe)
         {
 
             var claimIdentity = (ClaimsIdentity)User.Identity;
@@ -171,34 +171,34 @@ namespace FitAndFresh.Areas.Customer.Controllers
             basketDetails.BasketList = await _db.Basket.Where(s => s.BasketUserId == claims.Value).ToListAsync();
             //This will retrieve all the items that the user has in the basket, within the database
 
-            basketDetails.OrderProcessingInfo.StatusOfPayment = StaticDetails.PaymentPendingStatus;
-            basketDetails.OrderProcessingInfo.DateOfOrder = DateTime.Now;
-            basketDetails.OrderProcessingInfo.UserId = claims.Value;
-            basketDetails.OrderProcessingInfo.Status = StaticDetails.PaymentPendingStatus;
-            //basketDetails.OrderProcessingInfo.CollectionTime = Convert.ToDateTime(basketDetails.OrderProcessingInfo.CollectionDate.ToShortDateString() + " " + basketDetails.OrderProcessingInfo.CollectionTime.ToShortTimeString());
-            basketDetails.OrderProcessingInfo.CollectionTime = basketDetails.OrderProcessingInfo.CollectionDate + basketDetails.OrderProcessingInfo.CollectionTime.TimeOfDay;
+            basketDetails.OrderProcessingInformation.StatusOfPayment = StaticDetails.PaymentPendingStatus;
+            basketDetails.OrderProcessingInformation.DateOfOrder = DateTime.Now;
+            basketDetails.OrderProcessingInformation.UserId = claims.Value;
+            basketDetails.OrderProcessingInformation.Status = StaticDetails.PaymentPendingStatus;
+            basketDetails.OrderProcessingInformation.CollectionTime = Convert.ToDateTime(basketDetails.OrderProcessingInformation.CollectionDate.ToShortDateString() + " " + basketDetails.OrderProcessingInformation.CollectionTime.ToShortTimeString());
+            //basketDetails.OrderProcessingInformation.CollectionTime = basketDetails.OrderProcessingInformation.CollectionDate + basketDetails.OrderProcessingInformation.CollectionTime.TimeOfDay;
 
-            List<OrderInfo> listOrderInfo = new List<OrderInfo>();
-            _db.OrderProcessingInfo.Add(basketDetails.OrderProcessingInfo);
+            List<OrderInformation> listOrderInformation = new List<OrderInformation>();
+            _db.OrderProcessingInformation.Add(basketDetails.OrderProcessingInformation);
             await _db.SaveChangesAsync();
 
-            basketDetails.OrderProcessingInfo.OrderTotal = 0;
+            basketDetails.OrderProcessingInformation.OrderTotal = 0;
 
 
             foreach (var i in basketDetails.BasketList)
             {
                 i.ItemInMenu = await _db.ItemInMenu.FirstOrDefaultAsync(s => s.Id == i.ProductId);
 
-                OrderInfo orderInfo = new OrderInfo
+                OrderInformation orderInfo = new OrderInformation
                 {
                     ItemInMenuId = i.ProductId,
-                    OrderProcessingId = basketDetails.OrderProcessingInfo.Id,
-                    //ItemName = i.ItemInMenu.Name,
+                    OrderProcessingId = basketDetails.OrderProcessingInformation.Id,
+                    ItemName = i.ItemInMenu.Name,
                     ItemPrice = i.ItemInMenu.ItemPrice,
                     Quantity = i.Quantity
                 };
-                basketDetails.OrderProcessingInfo.OrderTotal += orderInfo.Quantity * orderInfo.ItemPrice;
-                _db.OrderInfo.Add(orderInfo);
+                basketDetails.OrderProcessingInformation.OrderTotal += orderInfo.Quantity * orderInfo.ItemPrice;
+                _db.OrderInformation.Add(orderInfo);
             }
 
             //await _db.SaveChangesAsync();
@@ -210,9 +210,9 @@ namespace FitAndFresh.Areas.Customer.Controllers
 
             var settings = new ChargeCreateOptions
             {
-                Amount = Convert.ToInt32(basketDetails.OrderProcessingInfo.OrderTotal * 100),
-                Currency = "gbp",
-                Description = "Order Number: " + basketDetails.OrderProcessingInfo.Id,
+                Amount = Convert.ToInt32(basketDetails.OrderProcessingInformation.OrderTotal * 100),
+                Currency = "usd",
+                Description = "Order Number: " + basketDetails.OrderProcessingInformation.Id,
                 Source = tokenStripe,
                 //ReceiptEmail = basketDetails.BasketList
                 //I've set these fields as the minimum, but other fields can be added if needed - see ChargeCreateOptions strip model for other fields
@@ -223,27 +223,27 @@ namespace FitAndFresh.Areas.Customer.Controllers
 
             if (chargeStripe.BalanceTransactionId == null)
             {
-                basketDetails.OrderProcessingInfo.StatusOfPayment = StaticDetails.PaymentDeclinedStatus;
+                basketDetails.OrderProcessingInformation.StatusOfPayment = StaticDetails.PaymentDeclinedStatus;
             }
             else
             {
-                basketDetails.OrderProcessingInfo.OrderNumber = chargeStripe.BalanceTransactionId;
+                basketDetails.OrderProcessingInformation.OrderNumber = chargeStripe.BalanceTransactionId;
             }
 
             if (chargeStripe.Status.ToLower() == "succeeded")
             {
-                basketDetails.OrderProcessingInfo.Status = StaticDetails.SubmittedStatus;
-                basketDetails.OrderProcessingInfo.StatusOfPayment = StaticDetails.PaymentAcceptedStatus;
+                basketDetails.OrderProcessingInformation.Status = StaticDetails.SubmittedStatus;
+                basketDetails.OrderProcessingInformation.StatusOfPayment = StaticDetails.PaymentAcceptedStatus;
             }
             else
             {
-                basketDetails.OrderProcessingInfo.StatusOfPayment = StaticDetails.PaymentDeclinedStatus;
+                basketDetails.OrderProcessingInformation.StatusOfPayment = StaticDetails.PaymentDeclinedStatus;
             }
 
             await _db.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
 
-            //basketDetails.OrderProcessingInfo.OrderTotal = basketDetails.OrderProcessingInfo.OrderTotal + (i.ItemInMenu.ItemPrice * i.Quantity);
+            //basketDetails.OrderProcessingInformation.OrderTotal = basketDetails.OrderProcessingInformation.OrderTotal + (i.ItemInMenu.ItemPrice * i.Quantity);
             //this iterates through the items in BasketList and gets the total of the order
         }
     }

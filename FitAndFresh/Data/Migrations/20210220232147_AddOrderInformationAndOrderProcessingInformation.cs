@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FitAndFresh.Data.Migrations
 {
-    public partial class AddOrderInfoAndOrderProcessingInfoToDatabase : Migration
+    public partial class AddOrderInformationAndOrderProcessingInformation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,6 +17,8 @@ namespace FitAndFresh.Data.Migrations
                     DateOfOrder = table.Column<DateTime>(nullable: false),
                     OrderTotal = table.Column<double>(nullable: false),
                     CollectionTime = table.Column<DateTime>(nullable: false),
+                    StatusOfPayment = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
                     CollectionName = table.Column<string>(nullable: false),
                     PhoneNumber = table.Column<string>(nullable: false),
                     OrderNumber = table.Column<string>(nullable: true)
@@ -41,7 +43,7 @@ namespace FitAndFresh.Data.Migrations
                     OrderProcessingId = table.Column<int>(nullable: false),
                     ItemInMenuId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
-                    ItemName = table.Column<string>(nullable: false),
+                    ItemName = table.Column<string>(nullable: true),
                     ItemPrice = table.Column<double>(nullable: false)
                 },
                 constraints: table =>

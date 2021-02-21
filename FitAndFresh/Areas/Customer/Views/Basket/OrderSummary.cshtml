@@ -43,22 +43,22 @@
         <div>
             <div class="form-group row">
                 <div class="col-2">
-                    <label asp-for="@Model.OrderProcessingInfo.CollectionName" id="collectName" class="col-form-label"></label>
+                    <label asp-for="@Model.OrderProcessingInformation.CollectionName" id="collectName" class="col-form-label"></label>
                 </div>
                 <div class="col-9">
-                    <input asp-for="@Model.OrderProcessingInfo.CollectionName" class="form-control" />
+                    <input asp-for="@Model.OrderProcessingInformation.CollectionName" class="form-control" />
                 </div>
-                <span asp-validation-for="@Model.OrderProcessingInfo.CollectionName" class="text-danger"></span>
+                <span asp-validation-for="@Model.OrderProcessingInformation.CollectionName" class="text-danger"></span>
             </div>
 
             <div class="form-group row">
                 <div class="col-2">
-                    <label asp-for="@Model.OrderProcessingInfo.PhoneNumber" id="collectPhoneNumber" class="col-form-label"></label>
+                    <label asp-for="@Model.OrderProcessingInformation.PhoneNumber" id="collectPhoneNumber" class="col-form-label"></label>
                 </div>
                 <div class="col-9">
-                    <input asp-for="@Model.OrderProcessingInfo.PhoneNumber" class="form-control" />
+                    <input asp-for="@Model.OrderProcessingInformation.PhoneNumber" class="form-control" />
                 </div>
-                <span asp-validation-for="@Model.OrderProcessingInfo.PhoneNumber" class="text-danger"></span>
+                <span asp-validation-for="@Model.OrderProcessingInformation.PhoneNumber" class="text-danger"></span>
             </div>
 
 
@@ -67,7 +67,7 @@
                     <label>Collection Time</label>
                 </div>
                 <div class="col-9">
-                    <input type="time" asp-for="@Model.OrderProcessingInfo.CollectionTime" id="timepicker" value="" class="form-control" />
+                    <input type="time" asp-for="@Model.OrderProcessingInformation.CollectionTime" id="timepicker" value="" class="form-control" />
                 </div>
             </div>
 
@@ -77,7 +77,7 @@
                     <label>Collection Date</label>
                 </div>
                 <div class="col-9">
-                    <input type="date" asp-for="@Model.OrderProcessingInfo.CollectionDate" id="datepicker" value="" class="form-control" />
+                    <input type="date" asp-for="@Model.OrderProcessingInformation.CollectionDate" id="datepicker" value="" class="form-control" />
                 </div>
             </div>
 
@@ -112,20 +112,20 @@
         <div class="float-right">
 
             <h2>
-                Total: £<span id="textBasketTotal">@Model.OrderProcessingInfo.OrderTotal</span>
+                Total: £<span id="textBasketTotal">@Model.OrderProcessingInformation.OrderTotal</span>
             </h2>
         </div>
         <br />
         <br />
         <div>
             @{
-                var stripeTotal = Model.OrderProcessingInfo.OrderTotal * 100;
+                var stripeTotal = Model.OrderProcessingInformation.OrderTotal * 100;
             }
             <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="@Stripe.Value.PublishableKey" data-amount="@stripeTotal" data-name="Restaurant"  data-label="Submit Order" data-description="Enjoy fine food, without a messy kitchen" data-locale="auto">
             </script>
-            <script>
+            @*<script>
                 document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
-            </script>
+            </script>*@
             <button type="submit" id="submitOrder" onclick="return validateCollectionDetails()" value="Submit Order" class="btn-success float-right">
                 <h4>Submit Order</h4>
             </button>
@@ -148,10 +148,10 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
     <script>
-        //$(function () {                       
-        //    $("#datepicker").datepicker({ minDate: 0, maxDate: "+2W" })
-        //    $("#selectTime").timepicker({ 'minTime': '12:00 PM', 'maxTime': '10:30PM', step: '30' })
-        //});
+        $(function () {                       
+            $("#datepicker").datepicker({ minDate: 0, maxDate: "+2W" })
+            $("#selectTime").timepicker({ 'minTime': '12:00 PM', 'maxTime': '10:30PM', step: '30' })
+        });
 
 
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitAndFresh.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210218131600_AddOrderInfoAndOrderProcessingInfoToDatabase")]
-    partial class AddOrderInfoAndOrderProcessingInfoToDatabase
+    [Migration("20210220232147_AddOrderInformationAndOrderProcessingInformation")]
+    partial class AddOrderInformationAndOrderProcessingInformation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,8 +105,8 @@ namespace FitAndFresh.Data.Migrations
                     b.Property<int>("ItemInMenuId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ItemName")
-                        .HasColumnType("int");
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("ItemPrice")
                         .HasColumnType("float");
@@ -124,6 +124,37 @@ namespace FitAndFresh.Data.Migrations
                     b.HasIndex("OrderProcessingId");
 
                     b.ToTable("OrderInfo");
+                });
+
+            modelBuilder.Entity("FitAndFresh.Models.OrderInformation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ItemInMenuId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ItemPrice")
+                        .HasColumnType("float");
+
+                    b.Property<int>("OrderProcessingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemInMenuId");
+
+                    b.HasIndex("OrderProcessingId");
+
+                    b.ToTable("OrderInformation");
                 });
 
             modelBuilder.Entity("FitAndFresh.Models.OrderProcessingInfo", b =>
@@ -153,6 +184,12 @@ namespace FitAndFresh.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusOfPayment")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -162,6 +199,50 @@ namespace FitAndFresh.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("OrderProcessingInfo");
+                });
+
+            modelBuilder.Entity("FitAndFresh.Models.OrderProcessingInformation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CollectionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CollectionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfOrder")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("OrderTotal")
+                        .HasColumnType("float");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusOfPayment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OrderProcessingInformation");
                 });
 
             modelBuilder.Entity("FitAndFresh.Models.SubCategory", b =>
@@ -443,7 +524,31 @@ namespace FitAndFresh.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FitAndFresh.Models.OrderInformation", b =>
+                {
+                    b.HasOne("FitAndFresh.Models.ItemInMenu", "ItemInMenu")
+                        .WithMany()
+                        .HasForeignKey("ItemInMenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FitAndFresh.Models.OrderProcessingInformation", "OrderProcessingInformation")
+                        .WithMany()
+                        .HasForeignKey("OrderProcessingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("FitAndFresh.Models.OrderProcessingInfo", b =>
+                {
+                    b.HasOne("FitAndFresh.Models.AddUser", "AddUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FitAndFresh.Models.OrderProcessingInformation", b =>
                 {
                     b.HasOne("FitAndFresh.Models.AddUser", "AddUser")
                         .WithMany()
