@@ -12,6 +12,8 @@ using FitAndFresh.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using FitAndFresh.Utility;
+using Stripe;
 
 namespace FitAndFresh
 {
@@ -35,6 +37,10 @@ namespace FitAndFresh
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.Configure<StripeDetails>(Configuration.GetSection("Stripe"));
+            //adds Stripe service to our application, also directing the configuration settings from appsettings.json file
+
             services.AddControllersWithViews();
             services.AddRazorPages().AddRazorRuntimeCompilation();
 
@@ -67,6 +73,7 @@ namespace FitAndFresh
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
+            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["SecretKey"];
 
             app.UseEndpoints(endpoints =>
             {

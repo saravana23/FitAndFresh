@@ -7,7 +7,7 @@ namespace FitAndFresh.Models.ViewModels
 {
     public class BasketDetailsVM
     {                      
-        public OrderProcessingInfo OrderProcessingInfo { get; set; }
+        public OrderProcessingInformation OrderProcessingInformation { get; set; }
         public List<Basket> BasketList { get; set; }
 
     }
